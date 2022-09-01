@@ -14,9 +14,6 @@ import markjaml
 import pinout
 
 
-reload(sys)
-sys.setdefaultencoding('utf8')
-
 lang = "en"
 
 if len(sys.argv) > 1:
@@ -34,7 +31,7 @@ def slugify(value):
     Normalizes string, converts to lowercase, removes non-alpha characters,
     and converts spaces to hyphens.
     """
-    value = unicode(value)
+    value = str(value)
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
     value = re.sub('[^\w\s-]', '', value).strip().lower()
     return re.sub('[-\s]+', '_', value)
@@ -62,11 +59,18 @@ overlays = map(load_overlay, overlays)
 for overlay in overlays:
     for t in ['power', 'ground']:
         try:
-            overlay['data'][t] = overlay['data'][t].keys()
+            overlay['data'][t] = list(str(k) for k in overlay['data'][t].keys())
         except (KeyError, AttributeError):
             pass
+    data = {
+        str(k): v for k, v in overlay["data"].items()
+    }
+    if "pin" in data:
+        data["pin"] = {
+            str(k): v for k, v in data["pin"].items()
+        }
     filename = overlay['api_output_file']
-    data = json.dumps(overlay['data'], sort_keys=True)
+    data = json.dumps(data, sort_keys=True)
     
     #print("Writing: {}".format(filename))
     #print(data)
