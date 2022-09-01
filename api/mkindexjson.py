@@ -33,14 +33,6 @@ overlays = glob.glob("{}src/{}/overlay/*.md".format(BASE_DIR, lang))
 pages = {}
 
 
-def cssify(value):
-    value = slugify(value)
-    if value[0] == '3' or value[0] == '5':
-        value = 'pow' + value
-
-    return value
-
-
 def slugify(value):
     """
     Normalizes string, converts to lowercase, removes non-alpha characters,
@@ -77,17 +69,6 @@ def load_overlay(overlay):
         }
     except IOError:
         return None
-
-
-def load_md(filename):
-    filename = '../src/{}/{}'.format(lang, filename)
-    try:
-        html = markdown.markdown(open(filename).read(), extensions=['fenced_code'])
-
-        return html
-    except IOError:
-        print('Unable to load markdown from {}'.format(filename))
-        return ''
 
 
 overlays = map(load_overlay, overlays)

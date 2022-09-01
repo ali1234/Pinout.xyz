@@ -102,17 +102,6 @@ def load_overlay(overlay):
         return None
 
 
-def load_md(filename):
-    filename = 'src/{}/{}'.format(lang, filename)
-    try:
-        html = markdown.markdown(open(filename).read(), extensions=['fenced_code'])
-
-        return html
-    except IOError:
-        print('Unable to load markdown from {}'.format(filename))
-        return ''
-
-
 overlays = map(load_overlay, overlays)
 
 uses = {}

@@ -29,14 +29,6 @@ overlays = glob.glob("{}src/{}/overlay/*.md".format(BASE_DIR, lang))
 pages = {}
 
 
-def cssify(value):
-    value = slugify(value)
-    if value[0] == '3' or value[0] == '5':
-        value = 'pow' + value
-
-    return value
-
-
 def slugify(value):
     """
     Normalizes string, converts to lowercase, removes non-alpha characters,
